@@ -10,7 +10,7 @@ This project is intended for education purposes only and not for production usag
 
 ## Getting Started
 
-Create [SSH Key Pair](https://us-east-1.console.aws.amazon.com/ec2/home?region=us-east-1#KeyPairs:) named `id_aws` for Bastion Host
+Create an [SSH Key Pair](https://us-east-1.console.aws.amazon.com/ec2/home?region=us-east-1#KeyPairs:) named `id_aws` for Bastion Host
 
 ## Deploy Pre-Built Architecture
 
