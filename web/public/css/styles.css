@@ -1,0 +1,123 @@
+.list-group-item:not(template):first-of-type {
+  border-top-left-radius: inherit !important;
+  border-top-right-radius: inherit !important;
+}
+
+@media (max-width: 992px) {
+  #chat {
+    min-height: 500px;
+  }
+}
+
+#chat {
+  height: 0;
+  overflow-y: scroll;
+}
+
+#channel-layout-nav {
+  height: 5rem;
+}
+
+.fixed-video-container {
+  width: calc(100vw - 25rem);
+  margin-top: 5rem;
+}
+
+.fixed-chat-container {
+  width: 22rem;
+  height: calc(100vh - 6.5rem);
+  margin-top: 6rem;
+  margin-right: 1rem;
+}
+
+.duration {
+  --bs-bg-opacity: .5;
+  font-size: 14px;
+}
+
+.chat-menu {
+  font-size: .7rem;
+}
+
+.chat-menu.dropdown-toggle::after {
+  display: none !important;
+}
+
+#multi-host-stage {
+  margin-bottom: 40px;
+}
+
+@media (max-width: 992px) and (orientation: landscape) {
+  #multi-host-stage #broadcast-preview {}
+}
+
+.broadcast-btn>.bi-telephone-fill {
+  display: inline-block;
+  transform: rotate(135deg);
+}
+
+.participant-name {
+  max-width: 100px;
+  font-size: .7rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.settings-btn {
+  padding: 0;
+}
+
+[data-bs-theme=dark] #channel-layout-nav {
+  --bs-bg-opacity: 1;
+  background-color: rgba(var(--bs-dark-rgb), var(--bs-bg-opacity)) !important;
+}
+
+[data-bs-theme=light] #channel-layout-nav {
+  --bs-bg-opacity: 1;
+  background-color: rgba(var(--bs-light-rgb), var(--bs-bg-opacity)) !important;
+}
+
+[data-bs-theme=dark] .link {
+  color: RGBA(var(--bs-light-rgb), var(--bs-link-opacity, 1)) !important;
+}
+
+[data-bs-theme=light] .link {
+  color: rgba(var(--bs-dark-rgb), var(--bs-text-opacity)) !important;
+}
+
+.dark-mode-toggle input {
+  height: 25px;
+  width: 35px !important;
+}
+
+[data-bs-theme=light] .form-switch .form-check-input {
+  --bs-form-switch-bg: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba%280, 0, 0, 0.25%29'/%3e%3c/svg%3e") !important;
+}
+
+@media (max-width: 767px) {
+  .navbar-nav .show .dropdown-menu {
+    position: static;
+    float: none;
+    width: auto;
+    margin-top: 0;
+    background-color: transparent;
+    border: 0;
+    box-shadow: none;
+  }
+}
+
+/*
+.dark-mode-toggle-input:checked {
+  background-color: rgba(var(--bs-secondary-rgb));
+  border-color: rgba(var(--bs-dark-rgb));
+}
+
+.form-switch .dark-mode-toggle-input {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba(var(--bs-dark-rgb))'/%3e%3c/svg%3e");
+}
+
+.form-switch .dark-mode-toggle-input:focus {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba(var(--bs-dark-rgb))'/%3e%3c/svg%3e");
+}
+*/

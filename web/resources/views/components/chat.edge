@@ -1,0 +1,63 @@
+<div id="chat-container" class="h-100 vstack rounded border border-secondary p-3"
+  x-data="chatmodel('{{chatArn}}', '{{chatEndpoint}}', '{{broadcastType || ''}}', {{isMultihost || false}})">
+  <div id="chat" class="flex-grow-1 mb-3">
+    <template x-for="msg in messages" id="chat-msg-template">
+      <div class="mb-2 msg-container" x-bind:data-timestamp="msg.SendTime">
+        <template x-if="isAdmin">
+          <div class="dropdown float-start">
+            <i class="border border-secondary-muted rounded bi bi-three-dots-vertical chat-menu dropdown-toggle ps-1 pe-1 me-1" type="button" data-bs-toggle="dropdown" aria-expanded="false"></i>
+            <ul class="dropdown-menu">
+              <template x-if="Number(msg.Sender.UserId) !== Number(userId)">
+                <li>
+                  <a href="#" class="dropdown-item" role="button" x-on:click="disconnectUser(msg.Sender.UserId)" data-bs-toggle="tooltip" data-bs-placement="bottom" aria-label="Disconnect User" data-bs-original-title="Disconnect User">
+                    <i class="bi bi-person-x-fill text-danger me-1 disconnect-user"></i>
+                    Disconnect User
+                  </a>
+                </li>
+              </template>
+              <li>
+                <a href="#" class="dropdown-item" x-on:click="deleteMessage(msg.Id)" role="button" data-bs-toggle="tooltip" data-bs-placement="bottom" aria-label="Delete Message" data-bs-original-title="Delete Message">
+                  <i class="bi bi-trash-fill text-danger me-1 mod-chat"></i> Delete Message
+                </a>
+              </li>
+              <template x-if="isAdmin && isMultihost && msg.Sender.Attributes.isGuest !== 'true' && Number(msg.Sender.UserId) !== userId">
+                <li>
+                  <a href="#" class="dropdown-item" role="button" x-on:click="inviteUserToStage(msg.Sender.UserId, msg.Sender.Attributes.username)" data-bs-toggle="tooltip" data-bs-placement="bottom" aria-label="Invite User to Stream" data-bs-original-title="Invite User to Stream">
+                    <i class="bi bi-person-fill-add text-primary me-1 invite-user"></i>
+                    Invite to Stream
+                  </a>
+                </li>
+              </template>
+            </ul>
+          </div>
+        </template>
+        <span class="fw-bold chat-username" x-text="msg.Sender.Attributes.username"></span>:&nbsp;<span class="msg" x-bind:data-msg-id="msg.Id" x-text="msg.Content"></span>
+      </div>
+    </template>
+  </div>
+  <div class="flex-grow input-group">
+    <input x-init="$el.focus()" x-on:keyup.enter="sendChat($el)" x-ref="chatInput" class="form-control border border-secondary" maxlength="500" type="text" />
+    <button type="button" x-on:click="sendChat($refs.chatInput)" id="submit-chat" class="btn btn-outline-secondary"><i class="bi bi-send"></i></button>
+  </div>
+
+  <div class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3">
+    <div id="error-notification" class="toast text-bg-danger" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body">
+          An error has occurred. Please try again.
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+    <div id="invite-notification" class="toast text-bg-success" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body">
+          You have been invited to <a class="text-white" x-bind:href="`/multihost/${inviteType || null}/${stageName}`">join this stream</a>!
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/js/chat.js" type="module"></script>

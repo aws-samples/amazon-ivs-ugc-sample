@@ -1,0 +1,11 @@
+<div id="chat-container" class="h-100 vstack rounded border border-secondary p-3" x-data="chatmodel({{chatLog}})">
+  <div id="chat" class="flex-grow-1 mb-3">
+    <template x-for="msg in chatLog" id="chat-msg-template">
+      <div x-show="new Date(msg.sentAt).getTime() <= currentTimestamp" class="mb-2 msg-container">
+        <span class="fw-bold chat-username" x-text="msg.sentBy.username"></span>:&nbsp;<span class="msg" x-bind:data-msg-id="msg.id" x-text="msg.content"></span>
+      </div>
+    </template>
+  </div>
+</div>
+
+<script src="/js/vod-chat.js" type="module"></script>

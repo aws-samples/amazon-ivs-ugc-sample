@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "@2toad/profanity": "^2.2.0",
+    "@aws-sdk/client-cloudwatch-logs": "^3.341.0",
+    "@aws-sdk/client-ivs": "^3.332.0",
+    "@aws-sdk/client-ivs-realtime": "^3.332.0",
+    "@aws-sdk/client-ivschat": "^3.332.0",
+    "node-fetch": "^3.3.1",
+    "pg": "^8.11.0"
+  }
+}

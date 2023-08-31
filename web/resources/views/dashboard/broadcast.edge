@@ -1,0 +1,69 @@
+@layout('layouts/dashboard')
+@set('title', 'StreamCat: Broadcast')
+@section('body')
+<div x-data="model">
+  <div class="row">
+    <div class="col-xl-9 mb-3 mb-xl-0">
+      <div class="position-relative">
+        <div class="ratio ratio-16x9">
+          <canvas id="broadcast-preview" class="rounded shadow w-100"></canvas>
+        </div>
+        <div class="position-absolute top-0 end-0 p-2">
+          <span class="badge" :class="{'text-bg-danger': isBroadcasting, 'text-bg-light border border-secondary' : !isBroadcasting}" x-text="isBroadcasting ? 'LIVE' : 'OFFLINE'"></span>
+        </div>
+        <div class="position-absolute bottom-0 start-0 p-1">
+          <button id="screenshare-btn" x-on:click="toggleScreenShare" class="btn btn-primary text-nowrap h-100 me-lg-3" data-bs-toggle="tooltip" data-bs-placement="bottom" aria-label="Share Screen" data-bs-original-title="Share Screen"><i class="bi-display"></i></button>
+        </div>
+        <div class="position-absolute bottom-0 start-50 translate-middle-x p-1">
+          <button id="broadcast-btn"
+            x-on:click="toggleBroadcast"
+            class="btn text-nowrap h-100 broadcast-btn"
+            :class="{'btn-success': !isBroadcasting, 'btn-danger': isBroadcasting}"
+            data-bs-toggle="tooltip"
+            data-bs-placement="bottom"
+            x-bind:data-bs-original-title="isBroadcasting ? 'Stop Broadcast' : 'Broadcast'">
+            <i class="bi bi-camera-fill" x-bind:class="{'bi-telephone-fill': isBroadcasting, 'bi-camera-fill': !isBroadcasting}"></i>
+          </button>
+        </div>
+        <div class="position-absolute bottom-0 end-0 p-1" data-bs-toggle="tooltip" data-bs-placement="bottom" aria-label="Settings" data-bs-original-title="Settings">
+          <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#settings-modal"><i class="bi bi-gear"></i></button>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 mb-lg-0 mb-3">
+      @!component('components/chat', { chatArn, chatEndpoint })
+    </div>
+  </div>
+  <div class="modal fade" id="settings-modal" tabindex="-1" aria-labelledby="settings-modal-lbl" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="settings-modal-lbl">Settings</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <select name="camera-select" x-model="selectedVideoDeviceId" id="camera-select" class="form-select" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="Select Video Source">
+              <template x-for="device in videoDevices">
+                <option :value="device.deviceId" x-text="device.label"></option>
+              </template>
+            </select>
+          </div>
+          <div class="mb-3">
+            <select name="mic-select" id="mic-select" x-model="selectedAudioDeviceId" class="form-select" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="Select Audio Source">
+              <template x-for="device in audioDevices">
+                <option :value="device.deviceId" x-text="device.label"></option>
+              </template>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://web-broadcast.live-video.net/1.3.3/amazon-ivs-web-broadcast.js"></script>
+<script src="/js/dashboard/broadcast.js" type="module"></script>
+@end

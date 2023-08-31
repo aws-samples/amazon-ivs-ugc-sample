@@ -1,0 +1,88 @@
+@layout('layouts/main')
+@set('title', 'StreamCat: Home')
+
+@section('body')
+<div class="mb-5">
+  <div class="row">
+    <div class="col-12 col-xl-9">
+      <h1>Live Channels</h1>
+      <div class="row">
+        @if(!liveChannels.length)
+        <div class="col-12">
+          <h2>No one is live right now 😿!</h2>
+        </div>
+        @end
+        @each(channel in liveChannels)
+        <div class="col-12 col-xl-3 mb-3 mb-xl-0">
+          <a href="/channel/{{channel.name}}" class="text-decoration-none">
+            <div class="position-relative">
+              <img src="{{channel.currentStream().latestThumbnail}}" x-on:error="$el.src = '/no_image.jpeg'" alt="{{channel.name}}'s stream from {{channel.currentStream()?.startedAt || new Date()}}" class="stream-thumb img-fluid img-thumbnail rounded" />
+              <div class="position-absolute end-0 bottom-0 pe-2 pb-2">
+                <span class="duration p-1 text-bg-dark rounded"></span>
+              </div>
+            </div>
+          </a>
+          <div>
+            <a href="/channel/{{channel.name}}" class="text-decoration-none">
+              <div class="fs-5">{{channel.name}}</div>
+            </a>
+            <a href="/channel/{{channel.name}}" class="text-decoration-none">
+              <div>{{channel?.title || 'Untitled Stream'}}</div>
+            </a>
+            <div>
+              <a href="/category/{{channel.category.name}}" class="text-decoration-none">{{channel.category.name}}</a>
+            </div>
+          </div>
+        </div>
+        @end
+      </div>
+    </div>
+    <div class="col-12 col-xl-3 mb-3 mb-xl-0">
+      <h1>Real Time Channels</h1>
+      <div>
+        <ul class="list-group">
+          @if(!liveRealtimeChannels.length)
+          <li class="list-group-item">No one is live right now 😿!</li>
+          @end
+          @each(stage in liveRealtimeChannels)
+          <li class="list-group-item"><a href="/channel/realtime/{{stage.name}}">{{stage.name}}</a></li>
+          @end
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div>
+  <h1>Recent Broadcasts</h1>
+  <div class="row">
+    @if(!recentBroadcasts.length)
+    <div class="col-12">
+      <h2>No recent broadcasts 😿!</h2>
+    </div>
+    @end
+    @each(stream in recentBroadcasts)
+    <div class="col-12 col-xl-3">
+      <a href="/vod/{{stream.id}}" class="text-decoration-none text-dark">
+        <div class="position-relative">
+          <img src="{{stream.latestThumbnail}}" x-on:error="$el.src = '/no_image.jpeg'" alt="{{stream.channel.name}}'s stream from {{stream?.startedAt || new Date()}}" class="stream-thumb img-fluid img-thumbnail rounded" />
+          <div class="position-absolute end-0 bottom-0 pe-2 pb-2">
+            <span class="duration p-1 text-bg-dark rounded">{{stream.startedRelativeTime}}</span>
+          </div>
+        </div>
+      </a>
+      <div class="mb-3">
+        <a href="/channel/{{stream.channel.name}}" class="text-decoration-none">
+          <div class="fs-5">{{stream.channel.name}}</div>
+        </a>
+        <a href="/vod/{{stream.id}}" class="text-decoration-none">
+          <div>{{stream.title || 'Untitled Stream'}}</div>
+        </a>
+        <div>
+          {{stream.category?.name || ''}}
+        </div>
+      </div>
+    </div>
+    @end
+  </div>
+</div>
+@end

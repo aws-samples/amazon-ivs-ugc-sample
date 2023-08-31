@@ -1,0 +1,48 @@
+<ul class="navbar-nav me-2">
+  <li class="nav-item me-2">
+    <div>
+      @include('partials/dark-mode-toggle')
+    </div>
+  </li>
+
+  <li class="dropdown me-0 me-lg-3 mb-3 mb-lg-0">
+    <a class="btn navbar-btn dropdown-toggle btn-danger" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      Go Live
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end">
+      <li>
+        <a class="dropdown-item" href="/dashboard/broadcast"><i class="bi bi-camera-reels"></i> Broadcast (Low-Latency Streaming)</a>
+      </li>
+      <li>
+        <a class="dropdown-item" href="/multihost/lowlatency/{{auth.user?.username}}"><i class="bi bi-people-fill"></i> Broadcast with Other Users (Low-Latency Streaming)</a>
+      </li>
+      <li>
+        <a class="dropdown-item" href="/multihost/realtime/{{auth.user?.username}}"><i class="bi bi-lightning-fill text-danger"></i> Broadcast with Other Users (Real-Time Streaming)</a>
+      </li>
+    </ul>
+  </li>
+
+  <li class="dropdown mb-3 mb-lg-0">
+    <a class="btn navbar-btn dropdown-toggle border-secondary-subtle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+      {{auth.user.username}}
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end">
+      <li><a class="dropdown-item" href="/channel/{{auth.user?.username}}"><i class="bi bi-tv"></i> My Channel (Low-Latency Streaming)</a></li>
+      <li><a class="dropdown-item" href="/channel/realtime/{{auth.user?.username}}"><i class="bi bi-lightning-fill text-danger"></i> My Channel (Real-Time Streaming)</a></li>
+      <li>
+        <a class="dropdown-item" href="/dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a>
+      </li>
+      <li>
+        <hr class="dropdown-divider">
+      </li>
+      <li>
+        <a href="/logout" class="dropdown-item"><i class="bi bi-box-arrow-right"></i> Logout</a>
+      </li>
+    </ul>
+  </li>
+</ul>
+<script src="/js/utils.js" type="module"></script>
+<script type="module">
+  import { Utils } from '/js/utils.js';
+  document.addEventListener('DOMContentLoaded', Utils.tooltips)
+</script>

@@ -1,0 +1,43 @@
+@layout('layouts/channel')
+@set('title', 'StreamCat: Multihost Broadcast')
+@section('body')
+<div x-data="model('{{stage.name}}', {{JSON.stringify(stageToken)}})">
+  <div id="video-container" class="fixed-video-container">
+    <div>
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-12 mb-3 d-flex align-items-center">
+          <div class="position-relative w-100">
+            <canvas id="broadcast" class="rounded shadow w-100"></canvas>
+            <audio id="audio-player" autoplay></audio>
+            <div class="position-absolute top-0 end-0 p-3">
+              <span class="badge" :class="{'text-bg-danger': isLive, 'text-bg-light border border-dark': !isLive}" x-text="isLive ? 'LIVE' : 'Offline'"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="d-flex justify-content-between align-items center align-self-center">
+    <div>
+      <a href="/channel/{{channel.name}}" class="link text-decoration-none">
+        <h1 class="mb-0">{{channel.name}}</h1>
+      </a>
+      @if(channel.isPartner)
+      <div class="mb-3">
+        <span class="badge bg-danger">StreamCat Partner!</span>
+      </div>
+      @end
+    </div>
+  </div>
+  <div class="mb-3">
+    <div>
+      <span class="fw-bold">Category:</span> {{channel.category?.name || 'Unlisted'}}
+    </div>
+  </div>
+  <div class="position-fixed top-0 bottom-0 end-0 fixed-chat-container">
+    @!component('components/chat', { chatArn, chatEndpoint, broadcastType: 'realtime' })
+  </div>
+</div>
+<script src="https://web-broadcast.live-video.net/1.3.3/amazon-ivs-web-broadcast.js"></script>
+<script src="/js/multihost-player.js" type="module"></script>
+@end

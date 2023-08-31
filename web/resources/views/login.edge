@@ -1,0 +1,31 @@
+@layout('layouts/main')
+@set('title', 'StreamCat: Login')
+
+@section('body')
+<div x-data>
+  <form x-bind:action="$store.form.action" method="POST" class="col-4 offset-4">
+    <div class="card">
+      <div class="card-body">
+        @if(flashMessages.has('message'))
+        <div class="alert alert-danger">{{flashMessages.get('message')}}</div>
+        @end
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input type="username" class="form-control" id="username" name="username" aria-describedby="usernameHelp" required maxlength="255" autocomplete="off" />
+          <div id="usernameHelp" class="form-text"></div>
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" class="form-control" id="password" name="password" aria-describedby="passwordHelp" required maxlength="180" />
+          <div id="emailHelp" class="form-text"></div>
+        </div>
+      </div>
+      <div class="card-footer d-flex justify-content-between">
+        <button type="submit" x-on:click="$store.form.action = '/register'" class="btn btn-outline-secondary">Create New Account</button>
+        <button type="submit" x-on:click="$store.form.action = '/login'" class="btn btn-primary">Login</button>
+      </div>
+    </div>
+  </form>
+</div>
+<script src="/js/login.js"></script>
+@end

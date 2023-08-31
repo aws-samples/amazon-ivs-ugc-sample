@@ -1,0 +1,26 @@
+@layout('layouts/main')
+@set('title', 'StreamCat: Category')
+
+@section('body')
+<div>
+  <h1>Live Channels in '{{decodeURIComponent(categoryName)}}'</h1>
+  <div class="row">
+    @each(channel in liveChannels)
+    <div class="col-12 col-xl-3">
+      <a href="/channel/{{channel.name}}" class="text-decoration-none text-dark">
+        <div class="position-relative">
+          <img src="{{channel.currentStream().latestThumbnail}}" x-on:error="$el.src = '/no_image.jpeg'" alt="{{channel.name}}'s stream from {{channel.currentStream()?.startedAt || new Date()}}" class="stream-thumb img-fluid img-thumbnail rounded" />
+          <div class="position-absolute end-0 bottom-0 pe-2 pb-2">
+            <span class="duration p-1 text-bg-dark rounded"></span>
+          </div>
+        </div>
+      </a>
+      <div>
+        <div class="fs-5">{{channel.name}}</div>
+        <div>{{channel.category.name}}</div>
+      </div>
+    </div>
+    @end
+  </div>
+</div>
+@end

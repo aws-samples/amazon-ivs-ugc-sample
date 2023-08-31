@@ -1,0 +1,21 @@
+<ul class="navbar-nav me-1 mb-3 mb-lg-0">
+  <li class="nav-item">
+    <div class="form-check form-switch dark-mode-toggle d-flex align-items-center" x-data="toggleModel">
+      <button class="btn rounded rounded-5" x-on:click="isDarkMode = !isDarkMode">
+        <i class="bi" x-bind:class="{'bi-moon-stars-fill': isDarkMode, 'bi-brightness-high-fill': !isDarkMode}"></i>
+      </button>
+    </div>
+  </li>
+</ul>
+<script>
+  document.addEventListener('alpine:init', () => {
+    Alpine.data('toggleModel', () => ({
+      init() {
+        this.isDarkMode = localStorage.getItem('streamcat-dark-mode') === 'true';
+        this.$watch('isDarkMode', (isDarkMode) => {
+          dispatchEvent(new CustomEvent('darkModeChanged', { detail: { isDarkMode } }));
+        });
+      },
+    }));
+  });
+</script>

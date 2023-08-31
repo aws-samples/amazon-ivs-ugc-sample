@@ -1,0 +1,102 @@
+@layout('layouts/channel')
+@set('title', 'StreamCat: Multihost Broadcast')
+@section('body')
+<div x-data="model('{{stage.name}}', {{JSON.stringify(stageToken)}}, '{{broadcastType}}', '{{chatArn}}')">
+  <div id="video-container" class="fixed-video-container">
+    <div id="multi-host-stage">
+      <div class="row justify-content-center">
+        <div class="col-12 col-lg-10 mb-3 d-flex align-items-center">
+          <div class="position-relative w-100">
+            <canvas id="broadcast-preview" class="rounded shadow w-100"></canvas>
+            <div class="position-absolute top-0 end-0 p-3">
+              <div class="d-flex">
+                <div class="badge text-bg-light me-1">Broadcast: <span id="status-indicator" :class="{'text-danger': isBroadcasting}" x-text="isBroadcasting ? 'LIVE' : 'Offline'"></span></div>
+                <div class="badge text-bg-light">Conference: <span id="conference-indicator" x-text="conferenceState"></span></div>
+              </div>
+            </div>
+            <div class="position-absolute bottom-0 start-0 p-3 d-none">
+              <button id="screenshare-btn" x-on:click="toggleScreenShare" class="btn btn-light border border-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" aria-label="Share Screen" data-bs-original-title="Share Screen"><i class="bi-display"></i></button>
+            </div>
+            @if(isHost)
+            <div class="position-absolute bottom-0 start-50 translate-middle-x pb-3">
+              <button id="broadcast-btn"
+                class="btn text-nowrap me-2 broadcast-btn"
+                data-bs-toggle="tooltip"
+                data-bs-placement="bottom"
+                x-bind:class="{'btn-danger': isBroadcasting, 'btn-success': !isBroadcasting}" x-on:click="toggleBroadcast()"
+                title="Toggle Broadcast"><i class="bi" x-bind:class="{'bi-telephone-fill': isBroadcasting, 'bi-camera-fill': !isBroadcasting}"></i></button>
+            </div>
+            @end
+          </div>
+        </div>
+      </div>
+      <div class="row justify-content-center" id="participants">
+        <template x-for="participant in stageParticipants">
+          <div class="col-6 col-lg-2 participant-col mb-3">
+            <div class="position-relative">
+              <div class="ratio ratio-16x9">
+                <video x-bind:id="`participant-${participant.id}`" class="guest-video rounded bg-secondary" playsinline autoplay></video>
+              </div>
+              <div class="position-absolute start-0 bottom-0 p-2 text-white text-outline">
+                <div class="participant-name bg-dark p-1 rounded" style="--bs-bg-opacity: .7;" x-text="participant.attributes.username"></div>
+              </div>
+              <div class="position-absolute top-0 end-0 p-1" data-bs-toggle="tooltip" data-bs-placement="bottom" aria-label="Settings" data-bs-original-title="Settings">
+                <button class="btn btn-outline-light btn-sm settings-btn" x-show="participant.isLocal" data-bs-toggle="modal" data-bs-target="#settings-modal"><i class="bi bi-three-dots-vertical"></i></button>
+              </div>
+              @if(isHost)
+              <div class="position-absolute bottom-0 end-0 p-2" data-bs-toggle="tooltip" data-bs-placement="bottom" aria-label="Disconnect Participant" data-bs-original-title="Disconnect Participant">
+                <button class="btn btn-danger btn-sm settings-btn" x-show="!participant.isLocal" x-on:click="disconnectParticipant(participant.userId, participant.id)"><i class="bi bi-trash-fill"></i></button>
+              </div>
+              @end
+            </div>
+          </div>
+        </template>
+      </div>
+    </div>
+  </div>
+  <div class="position-fixed top-0 bottom-0 end-0 fixed-chat-container">
+    @!component('components/chat', { chatArn, chatEndpoint, broadcastType, isMultihost: true })
+  </div>
+
+  <div class="modal fade" id="settings-modal" tabindex="-1" aria-labelledby="settings-modal-lbl" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="settings-modal-lbl">Settings</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <select name="camera-select" x-model="selectedVideoDeviceId" id="camera-select" class="form-select" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="Select Video Source">
+              <template x-for="device in videoDevices">
+                <option :value="device.deviceId" x-text="device.label"></option>
+              </template>
+            </select>
+          </div>
+          <div class="mb-3">
+            <select name="mic-select" id="mic-select" x-model="selectedAudioDeviceId" class="form-select" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="Select Audio Source">
+              <template x-for="device in audioDevices">
+                <option :value="device.deviceId" x-text="device.label"></option>
+              </template>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="toast-container position-fixed top-0 start-50 translate-middle-x p-3">
+    <div id="multihost-error-notification" class="toast text-bg-danger" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body">
+          Session ended. You will be redirected in <span x-text="redirectSeconds"></span> seconds.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="https://web-broadcast.live-video.net/1.3.3/amazon-ivs-web-broadcast.js"></script>
+<script src="/js/multihost-broadcast.js" type="module"></script>
+@end
