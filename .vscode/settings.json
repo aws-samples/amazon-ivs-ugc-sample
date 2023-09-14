@@ -1,8 +1,0 @@
-{
-    "eslint.workingDirectories": ["./web"],
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "yaml.schemaStore.enable": false,
-    "yaml.validate": false,
-    "javascript.format.insertSpaceAfterOpeningAndBeforeClosingEmptyBraces": false,
-    "typescript.format.insertSpaceAfterOpeningAndBeforeClosingEmptyBraces": false
-}
