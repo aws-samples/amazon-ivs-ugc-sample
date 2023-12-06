@@ -54,7 +54,7 @@ The StreamCat application architecture is divided into two categories: a collect
 
 To learn more about this application, please refer to the videos located at:
 
-TODO: add link
+https://www.youtube.com/playlist?list=PL5bUlblGfe0LlYN2N55FbJMK4ODo82auM
 
 This project is intended for education purposes only and not for production usage.
 
